@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | PayNDeliver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="admin">
+    <header>
+        <nav>
+            <a href="index.html" class="logo">PayNDeliver <span style="font-weight: 400; opacity: 0.6; font-size: 0.9em;">Admin</span></a>
+            <div id="logout-container">
+                <button id="logout-btn" class="btn-logout">Sign Out</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="login-container" class="login-container">
+            <h2>Authentication</h2>
+            <p style="margin-bottom: 2rem; color: var(--secondary-text);">Please enter your admin credentials.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="password" class="form-control" placeholder="Enter Password" style="text-align: center;" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Access Dashboard</button>
+            </form>
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                <div>
+                    <h1 style="font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 0.5rem;">Orders</h1>
+                    <p style="color: var(--secondary-text);">Manage and track customer purchases.</p>
+                </div>
+                
+                <div class="dashboard-controls">
+                    <div class="select-wrapper">
+                        <select id="filter-status" class="form-control" style="min-width: 200px; cursor: pointer;">
+                            <option value="all">View All Orders</option>
+                            <option value="cod">Cash on Delivery</option>
+                            <option value="momo">Mobile Money</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Shipping Info</th>
+                            <th>Product</th>
+                            <th>Total</th>
+                            <th>Reference</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

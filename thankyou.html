@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | PayNDeliver</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thank-you-container {
+            max-width: 600px;
+            margin: 50px auto;
+            text-align: center;
+            background: white;
+            padding: 4rem;
+            border-radius: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        .order-id-box {
+            background: #f5f5f7;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .order-id {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-text);
+            letter-spacing: 0.05em;
+            margin: 0.5rem 0;
+        }
+        .alert {
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        .alert-info {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body data-page="thankyou">
+    <header>
+        <nav>
+            <a href="index.html" class="logo">PayNDeliver</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="thank-you-container">
+            <h1 style="color: #27ae60; margin-bottom: 1rem; font-family: var(--font-display); font-size: 3rem;">Order Received</h1>
+            <p style="font-size: 1.2rem; color: var(--secondary-text);">Thank you for choosing PayNDeliver.</p>
+            
+            <div class="order-id-box">
+                <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; color: var(--secondary-text);">Order Reference</p>
+                <div id="order-id-display" class="order-id">Generating...</div>
+                <small style="color: var(--secondary-text);">Please save this ID for your records.</small>
+            </div>
+
+            <div id="confirmation-message">
+                <!-- Injected by JS -->
+            </div>
+
+            <div id="order-details" style="margin-top: 2rem;">
+                <a href="index.html" class="btn">Continue Shopping</a>
+            </div>
+
+            <!-- Feedback Section -->
+            <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                <h3 style="font-family: var(--font-display); margin-bottom: 1rem;">Rate Your Experience</h3>
+                <form id="feedback-form" style="max-width: 400px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 1rem;">
+                        <select id="rating" class="form-control" style="width: auto; text-align: center;" required>
+                            <option value="">Select Rating</option>
+                            <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                            <option value="4">⭐⭐⭐⭐ (Good)</option>
+                            <option value="3">⭐⭐⭐ (Average)</option>
+                            <option value="2">⭐⭐ (Fair)</option>
+                            <option value="1">⭐ (Poor)</option>
+                        </select>
+                    </div>
+                    <textarea id="feedback-comment" class="form-control" rows="3" placeholder="Any comments or suggestions?" required></textarea>
+                    <button type="submit" class="btn" style="margin-top: 1rem; background: var(--secondary-text);">Send Feedback</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PayNDeliver. Designed for Excellence.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
