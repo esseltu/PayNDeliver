@@ -360,7 +360,7 @@ const products = [
 // 5. Replace the values below
 const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
 
-const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1fdtEb8yepEsBZgRZRhYX9R7vo39EB_Ee0fDkwMXRnzE/edit?usp=sharing";
+const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLqOhMI9F3uSrl1UEg8YHTt596AbcJMYurF2Ox7ICjqfXtddp0AQVqFUAVIzPGSgfPi-Sc-Mcralkf/pub?gid=0&single=true&output=csv";
 
 const FORM_ENTRY_IDS = {
     orderId: "entry.1000000001",      // Replace with actual entry ID
