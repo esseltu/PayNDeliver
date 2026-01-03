@@ -594,40 +594,62 @@ function handleOrderSubmit(e) {
 }
 
 function sendOrderToFormSubmit(order) {
-    fetch(FORMSUBMIT_ENDPOINT, {
-        method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            _subject: `New Order: ${order.orderId}`,
-            _replyto: order.email, // Allows Admin to reply directly to user
-            _template: "table",
-            message: "New order received!",
-            ...order,
-            _autoresponse: [
-                `Thank you for your order, ${order.customerName}!`,
-                ``,
-                `Order Reference: ${order.orderId}`,
-                `Item: ${order.productName}`,
-                `Size: ${order.size}`,
-                `Quantity: ${order.quantity}`,
-                `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
-                `Payment Method: ${order.paymentMethod.toUpperCase()}`,
-                `Transaction ID: ${order.paymentRef}`,
-                ``,
-                `Shipping Address:`,
-                `${order.address}`,
-                ``,
-                `We will contact you shortly with delivery details.`,
-                `PayNDeliver`
-            ].join('\n')
-        })
-    })
-    .then(response => response.json())
-    .then(data => console.log("FormSubmit Success:", data))
-    .catch(error => console.error("FormSubmit Error:", error));
+    const form = document.createElement('form');
+    form.action = 'https://formsubmit.co/pixelforge926@gmail.com';
+    form.method = 'POST';
+    form.style.display = 'none';
+    
+    const add = (name, value) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value ?? '';
+        form.appendChild(input);
+    };
+    
+    // Core fields
+    add('email', order.email);
+    add('customerName', order.customerName);
+    add('orderId', order.orderId);
+    add('date', order.date);
+    add('productName', order.productName);
+    add('size', order.size);
+    add('quantity', order.quantity);
+    add('totalAmount', order.totalAmount);
+    add('paymentMethod', order.paymentMethod);
+    add('paymentRef', order.paymentRef);
+    add('phone', order.phone);
+    add('address', order.address);
+    
+    // FormSubmit meta
+    add('_subject', `New Order: ${order.orderId}`);
+    add('_template', 'table');
+    add('_replyto', order.email);
+    add('_captcha', 'false');
+    const thankyouUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}thankyou.html`;
+    add('_next', thankyouUrl);
+    
+    // Autoresponse to user
+    add('_autoresponse', [
+        `Thank you for your order, ${order.customerName}!`,
+        ``,
+        `Order Reference: ${order.orderId}`,
+        `Item: ${order.productName}`,
+        `Size: ${order.size}`,
+        `Quantity: ${order.quantity}`,
+        `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
+        `Payment Method: ${order.paymentMethod.toUpperCase()}`,
+        `Transaction ID: ${order.paymentRef}`,
+        ``,
+        `Shipping Address:`,
+        `${order.address}`,
+        ``,
+        `We will contact you shortly with delivery details.`,
+        `PayNDeliver`
+    ].join('\n'));
+    
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function saveOrderToLocal(order) {
@@ -648,7 +670,8 @@ async function loadOrders() {
                 if (s) o.status = s;
                 if (!o.status) o.status = o.paymentMethod === 'momo' ? 'pending_confirmation' : 'pending_payment';
             });
-            return remoteOrders;
+            const localOrders = JSON.parse(localStorage.getItem('orders') || '[]');
+            return remoteOrders.length ? remoteOrders : localOrders;
         } catch (e) {
             const fallback = JSON.parse(localStorage.getItem('orders') || '[]');
             return fallback;
