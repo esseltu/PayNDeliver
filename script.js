@@ -372,23 +372,28 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (page === 'thankyou') {
         setupThankYouPage();
     }
+    setupScrollReveal();
 });
 
 // --- Home Page Functions ---
+const PAGE_SIZE = 8;
+let currentCategory = 'all';
+let currentOffset = 0;
+
 function setupHomePage() {
-    renderProducts('all');
     setupCategoryFilters();
+    renderProducts('all', false);
+    setupLoadMore();
 }
 
-function renderProducts(category = 'all') {
+function renderProducts(category = 'all', append = false) {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    const filteredProducts = category === 'all' 
-        ? products 
-        : products.filter(p => p.category === category);
+    const list = category === 'all' ? products : products.filter(p => p.category === category);
+    const slice = list.slice(currentOffset, currentOffset + PAGE_SIZE);
 
-    grid.innerHTML = filteredProducts.map(product => `
+    const html = slice.map(product => `
         <div class="product-card">
             <img src="${product.image || PRODUCT_FALLBACK_IMAGE}" alt="${product.name}" class="product-image" onerror="this.src='${PRODUCT_FALLBACK_IMAGE}'">
             <div class="product-info">
@@ -398,23 +403,55 @@ function renderProducts(category = 'all') {
             </div>
         </div>
     `).join('');
+    if (append) {
+        grid.insertAdjacentHTML('beforeend', html);
+    } else {
+        grid.innerHTML = html;
+    }
+    const hasMore = currentOffset + PAGE_SIZE < list.length;
+    const btn = document.getElementById('load-more');
+    if (btn) btn.style.display = hasMore ? 'inline-flex' : 'none';
 }
 
 function setupCategoryFilters() {
     const filters = document.querySelectorAll('.category-btn');
     filters.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Remove active class from all
             filters.forEach(f => f.classList.remove('active'));
-            // Add active to clicked
             btn.classList.add('active');
             
-            const category = btn.dataset.category;
-            renderProducts(category);
+            currentCategory = btn.dataset.category;
+            currentOffset = 0;
+            renderProducts(currentCategory, false);
         });
     });
 }
 
+function setupLoadMore() {
+    const btn = document.getElementById('load-more');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        currentOffset += PAGE_SIZE;
+        renderProducts(currentCategory, true);
+    });
+}
+
+function setupScrollReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('in'));
+        return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('in');
+                obs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    els.forEach(el => obs.observe(el));
+}
 // --- Order Page Functions ---
 function setupOrderPage() {
     const urlParams = new URLSearchParams(window.location.search);
