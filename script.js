@@ -572,6 +572,8 @@ function sendOrderToFormSubmit(order) {
     add('_captcha', 'false');
     const thankyouUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}thankyou.html`;
     add('_next', thankyouUrl);
+    const importLink = buildAdminImportLink(order);
+    add('import_link', importLink);
     
     // Autoresponse to user
     add('_autoresponse', [
@@ -600,6 +602,12 @@ function saveOrderToLocal(order) {
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
     orders.push(order);
     localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function buildAdminImportLink(order) {
+    const adminUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}admin.html`;
+    const payload = btoa(unescape(encodeURIComponent(JSON.stringify(order))));
+    return `${adminUrl}?import=${payload}`;
 }
 
 async function loadOrders() {
@@ -670,6 +678,22 @@ function setupThankYouPage() {
 function setupAdminPage() {
     const loginForm = document.getElementById('login-form');
     const dashboard = document.getElementById('dashboard');
+    const importParam = new URLSearchParams(window.location.search).get('import');
+    if (importParam) {
+        try {
+            const json = decodeURIComponent(escape(atob(importParam)));
+            const order = JSON.parse(json);
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const exists = orders.some(o => o.orderId === order.orderId);
+            if (!exists) {
+                orders.push(order);
+                localStorage.setItem('orders', JSON.stringify(orders));
+            }
+            history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {
+            console.error('Import failed:', e);
+        }
+    }
     
     // Check if already logged in (session storage for simple auth)
     if (sessionStorage.getItem('adminAuth') === 'true') {
@@ -811,4 +835,34 @@ function sendStatusUpdateToFormSubmit(order, status) {
     .then(r => r.json())
     .then(d => console.log("Status email via FormSubmit:", d))
     .catch(err => console.error("Status email error:", err));
+}
+
+function exportOrders() {
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'payndeliver_orders.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+}
+
+function importOrders(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const importedOrders = JSON.parse(e.target.result);
+            localStorage.setItem('orders', JSON.stringify(importedOrders));
+            alert('Orders imported successfully');
+            if (typeof renderAdminOrders === 'function') renderAdminOrders();
+        } catch (err) {
+            alert('Invalid file. Please select a valid JSON export.');
+        }
+    };
+    reader.readAsText(file);
 }

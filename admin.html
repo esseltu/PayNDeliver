@@ -43,6 +43,11 @@
                             <option value="momo">Mobile Money</option>
                         </select>
                     </div>
+                    <div style="display:flex; gap:10px; align-items:center; margin-top: 10px;">
+                        <button onclick="exportOrders()" class="btn-secondary">Export Orders</button>
+                        <input type="file" id="order-import" accept=".json" onchange="importOrders(event)" style="display:none;">
+                        <button onclick="document.getElementById('order-import').click()" class="btn-secondary">Import Orders</button>
+                    </div>
                 </div>
             </div>
 
