@@ -573,62 +573,86 @@ function handleOrderSubmit(e) {
 }
 
 function sendOrderToFormSubmit(order) {
-    const form = document.createElement('form');
-    form.action = 'https://formsubmit.co/pixelforge926@gmail.com';
-    form.method = 'POST';
-    form.style.display = 'none';
-    
-    const add = (name, value) => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = name;
-        input.value = value ?? '';
-        form.appendChild(input);
-    };
-    
-    // Core fields
-    add('email', order.email);
-    add('customerName', order.customerName);
-    add('orderId', order.orderId);
-    add('date', order.date);
-    add('productName', order.productName);
-    add('size', order.size);
-    add('quantity', order.quantity);
-    add('totalAmount', order.totalAmount);
-    add('paymentMethod', order.paymentMethod);
-    add('paymentRef', order.paymentRef);
-    add('phone', order.phone);
-    add('address', order.address);
-    
-    // FormSubmit meta
-    add('_subject', `New Order: ${order.orderId}`);
-    add('_template', 'table');
-    add('_replyto', order.email);
-    add('_captcha', 'false');
     const thankyouUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}thankyou.html`;
-    add('_next', thankyouUrl);
-    
-    // Autoresponse to user
-    add('_autoresponse', [
-        `Thank you for your order, ${order.customerName}!`,
-        ``,
-        `Order Reference: ${order.orderId}`,
-        `Item: ${order.productName}`,
-        `Size: ${order.size}`,
-        `Quantity: ${order.quantity}`,
-        `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
-        `Payment Method: ${order.paymentMethod.toUpperCase()}`,
-        `Transaction ID: ${order.paymentRef}`,
-        ``,
-        `Shipping Address:`,
-        `${order.address}`,
-        ``,
-        `We will contact you shortly with delivery details.`,
-        `PayNDeliver`
-    ].join('\n'));
-    
-    document.body.appendChild(form);
-    form.submit();
+    const payload = {
+        _subject: `New Order: ${order.orderId}`,
+        _replyto: order.email,
+        _template: 'table',
+        email: order.email,
+        customerName: order.customerName,
+        orderId: order.orderId,
+        date: order.date,
+        productName: order.productName,
+        size: order.size,
+        quantity: order.quantity,
+        totalAmount: order.totalAmount,
+        paymentMethod: order.paymentMethod,
+        paymentRef: order.paymentRef,
+        phone: order.phone,
+        address: order.address,
+        _autoresponse: [
+            `Thank you for your order, ${order.customerName}!`,
+            ``,
+            `Order Reference: ${order.orderId}`,
+            `Item: ${order.productName}`,
+            `Size: ${order.size}`,
+            `Quantity: ${order.quantity}`,
+            `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
+            `Payment Method: ${order.paymentMethod.toUpperCase()}`,
+            `Transaction ID: ${order.paymentRef}`,
+            ``,
+            `Shipping Address:`,
+            `${order.address}`,
+            ``,
+            `We will contact you shortly with delivery details.`,
+            `PayNDeliver`
+        ].join('\n')
+    };
+    fetch(FORMSUBMIT_ENDPOINT, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then((res) => {
+        if (!res.ok) throw new Error('submit_failed');
+        window.location.href = thankyouUrl;
+    })
+    .catch(() => {
+        const form = document.createElement('form');
+        form.action = 'https://formsubmit.co/pixelforge926@gmail.com';
+        form.method = 'POST';
+        form.style.display = 'none';
+        const add = (name, value) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value ?? '';
+            form.appendChild(input);
+        };
+        add('email', order.email);
+        add('customerName', order.customerName);
+        add('orderId', order.orderId);
+        add('date', order.date);
+        add('productName', order.productName);
+        add('size', order.size);
+        add('quantity', order.quantity);
+        add('totalAmount', order.totalAmount);
+        add('paymentMethod', order.paymentMethod);
+        add('paymentRef', order.paymentRef);
+        add('phone', order.phone);
+        add('address', order.address);
+        add('_subject', `New Order: ${order.orderId}`);
+        add('_template', 'table');
+        add('_replyto', order.email);
+        add('_captcha', 'false');
+        add('_next', thankyouUrl);
+        add('_autoresponse', payload._autoresponse);
+        document.body.appendChild(form);
+        form.submit();
+    });
 }
 
 function saveOrderToLocal(order) {
