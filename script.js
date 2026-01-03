@@ -360,6 +360,8 @@ const products = [
 // 5. Replace the values below
 const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
 
+const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1fdtEb8yepEsBZgRZRhYX9R7vo39EB_Ee0fDkwMXRnzE/edit?usp=sharing";
+
 const FORM_ENTRY_IDS = {
     orderId: "entry.1000000001",      // Replace with actual entry ID
     date: "entry.1000000002",         // Replace with actual entry ID
@@ -634,6 +636,114 @@ function saveOrderToLocal(order) {
     localStorage.setItem('orders', JSON.stringify(orders));
 }
 
+async function loadOrders() {
+    if (!GOOGLE_SHEET_CSV_URL.includes("YOUR_SHEET_CSV_URL")) {
+        try {
+            const res = await fetch(GOOGLE_SHEET_CSV_URL, { mode: 'cors' });
+            const text = await res.text();
+            const remoteOrders = parseCSVToOrders(text);
+            const statusMap = JSON.parse(localStorage.getItem('orderStatuses') || '{}');
+            remoteOrders.forEach(o => {
+                const s = statusMap[o.orderId];
+                if (s) o.status = s;
+                if (!o.status) o.status = o.paymentMethod === 'momo' ? 'pending_confirmation' : 'pending_payment';
+            });
+            return remoteOrders;
+        } catch (e) {
+            const fallback = JSON.parse(localStorage.getItem('orders') || '[]');
+            return fallback;
+        }
+    }
+    const local = JSON.parse(localStorage.getItem('orders') || '[]');
+    return local;
+}
+
+function parseCSVToOrders(text) {
+    const rows = text.trim().split(/\r?\n/).map(splitCSVRow);
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(h => normalizeKey(h));
+    const map = {
+        orderid: 'orderId',
+        date: 'date',
+        customername: 'customerName',
+        phone: 'phone',
+        email: 'email',
+        address: 'address',
+        productname: 'productName',
+        size: 'size',
+        quantity: 'quantity',
+        totalamount: 'totalAmount',
+        paymentmethod: 'paymentMethod',
+        paymentref: 'paymentRef',
+        status: 'status'
+    };
+    const idx = {};
+    headers.forEach((h, i) => {
+        const f = map[h];
+        if (f) idx[f] = i;
+    });
+    const orders = [];
+    for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        const get = (field) => {
+            const i = idx[field];
+            return i !== undefined ? row[i] : '';
+        };
+        const qty = get('quantity') || '1';
+        const pm = (get('paymentMethod') || '').toLowerCase();
+        orders.push({
+            orderId: get('orderId'),
+            date: get('date'),
+            customerName: get('customerName'),
+            phone: get('phone'),
+            email: get('email'),
+            address: get('address'),
+            productName: get('productName'),
+            size: get('size'),
+            quantity: qty,
+            totalAmount: get('totalAmount'),
+            paymentMethod: pm === 'momo' || pm === 'cod' ? pm : 'cod',
+            paymentRef: get('paymentRef'),
+            status: get('status') || ''
+        });
+    }
+    return orders.filter(o => o.orderId);
+}
+
+function splitCSVRow(str) {
+    const res = [];
+    let cur = '';
+    let inQuotes = false;
+    for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        if (ch === '\"') {
+            if (inQuotes && str[i + 1] === '\"') {
+                cur += '\"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (ch === ',' && !inQuotes) {
+            res.push(cur);
+            cur = '';
+        } else {
+            cur += ch;
+        }
+    }
+    res.push(cur);
+    return res.map(s => s.trim());
+}
+
+function normalizeKey(s) {
+    return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function setOrderStatus(orderId, status) {
+    const map = JSON.parse(localStorage.getItem('orderStatuses') || '{}');
+    map[orderId] = status;
+    localStorage.setItem('orderStatuses', JSON.stringify(map));
+}
+
 // --- Thank You Page Functions ---
 function setupThankYouPage() {
     const lastOrder = JSON.parse(localStorage.getItem('lastOrder'));
@@ -713,12 +823,12 @@ function setupAdminPage() {
         }
     });
 
-    document.getElementById('logout-btn').addEventListener('click', () => {
+    document.getElementById('logout-btn').addEventListener('click', async () => {
         sessionStorage.removeItem('adminAuth');
         location.reload();
     });
 
-    document.getElementById('filter-status').addEventListener('change', renderAdminOrders);
+    document.getElementById('filter-status').addEventListener('change', () => { renderAdminOrders(); });
 }
 
 function showDashboard() {
@@ -727,8 +837,8 @@ function showDashboard() {
     renderAdminOrders();
 }
 
-function renderAdminOrders() {
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+async function renderAdminOrders() {
+    const orders = await loadOrders();
     const tbody = document.getElementById('orders-body');
     const filter = document.getElementById('filter-status').value;
 
@@ -793,6 +903,7 @@ function updateOrderStatus(orderId, newStatus) {
     if (orderIndex !== -1) {
         orders[orderIndex].status = newStatus;
         localStorage.setItem('orders', JSON.stringify(orders));
+        setOrderStatus(orderId, newStatus);
         renderAdminOrders();
         
         sendStatusUpdateToFormSubmit(orders[orderIndex], newStatus);
