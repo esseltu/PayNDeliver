@@ -371,8 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setupOrderPage();
     } else if (page === 'thankyou') {
         setupThankYouPage();
-    } else if (page === 'admin') {
-        setupAdminPage();
     }
 });
 
@@ -572,8 +570,6 @@ function sendOrderToFormSubmit(order) {
     add('_captcha', 'false');
     const thankyouUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}thankyou.html`;
     add('_next', thankyouUrl);
-    const importLink = buildAdminImportLink(order);
-    add('import_link', importLink);
     
     // Autoresponse to user
     add('_autoresponse', [
@@ -602,12 +598,6 @@ function saveOrderToLocal(order) {
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
     orders.push(order);
     localStorage.setItem('orders', JSON.stringify(orders));
-}
-
-function buildAdminImportLink(order) {
-    const adminUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}admin.html`;
-    const payload = btoa(unescape(encodeURIComponent(JSON.stringify(order))));
-    return `${adminUrl}?import=${payload}`;
 }
 
 async function loadOrders() {
@@ -672,197 +662,4 @@ function setupThankYouPage() {
             });
         });
     }
-}
-
-// --- Admin Functions ---
-function setupAdminPage() {
-    const loginForm = document.getElementById('login-form');
-    const dashboard = document.getElementById('dashboard');
-    const importParam = new URLSearchParams(window.location.search).get('import');
-    if (importParam) {
-        try {
-            const json = decodeURIComponent(escape(atob(importParam)));
-            const order = JSON.parse(json);
-            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-            const exists = orders.some(o => o.orderId === order.orderId);
-            if (!exists) {
-                orders.push(order);
-                localStorage.setItem('orders', JSON.stringify(orders));
-            }
-            history.replaceState({}, document.title, window.location.pathname);
-        } catch (e) {
-            console.error('Import failed:', e);
-        }
-    }
-    
-    // Check if already logged in (session storage for simple auth)
-    if (sessionStorage.getItem('adminAuth') === 'true') {
-        showDashboard();
-    }
-
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const password = document.getElementById('password').value;
-        if (password === 'admin123') {
-            sessionStorage.setItem('adminAuth', 'true');
-            showDashboard();
-        } else {
-            alert('Incorrect password');
-        }
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-        sessionStorage.removeItem('adminAuth');
-        location.reload();
-    });
-
-    document.getElementById('filter-status').addEventListener('change', () => { renderAdminOrders(); });
-}
-
-function showDashboard() {
-    document.getElementById('login-container').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'block';
-    renderAdminOrders();
-}
-
-async function renderAdminOrders() {
-    const orders = await loadOrders();
-    const tbody = document.getElementById('orders-body');
-    const filter = document.getElementById('filter-status').value;
-
-    tbody.innerHTML = '';
-
-    orders.slice().reverse().forEach((order, index) => {
-        // Filter logic
-        if (filter !== 'all') {
-            if (filter === 'cod' && order.paymentMethod !== 'cod') return;
-            if (filter === 'momo' && order.paymentMethod !== 'momo') return;
-        }
-
-        const tr = document.createElement('tr');
-        
-        // Status Badge Logic
-        let statusClass = '';
-        let statusText = '';
-        
-        if (order.status === 'pending_payment') {
-            statusClass = 'status-cod';
-            statusText = 'Pending COD';
-        } else if (order.status === 'pending_confirmation') {
-            statusClass = 'status-momo';
-            statusText = 'Verify Momo';
-        } else if (order.status === 'paid') {
-            statusClass = 'status-paid';
-            statusText = 'Paid';
-        } else if (order.status === 'shipped') {
-            statusClass = 'status-shipped';
-            statusText = 'Shipped';
-        }
-
-        tr.innerHTML = `
-            <td>${order.orderId}</td>
-            <td>${new Date(order.date).toLocaleDateString()}</td>
-            <td>
-                <strong>${order.customerName}</strong><br>
-                <small style="color: var(--secondary-text);">${order.phone}</small><br>
-                <div style="margin-top: 5px; font-size: 0.85rem; line-height: 1.4; max-width: 250px;">
-                    📍 ${order.address || 'No address provided'}
-                </div>
-            </td>
-            <td>${order.productName} (${order.size}) x${order.quantity}</td>
-            <td>GHC ${parseFloat(order.totalAmount).toFixed(2)}<br><small>${order.paymentMethod.toUpperCase()}</small></td>
-            <td>${order.paymentRef}</td>
-            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-            <td>
-                <div class="action-buttons">
-                    <button onclick="updateOrderStatus('${order.orderId}', 'paid')" class="btn-action btn-mark-paid">Mark Paid</button>
-                    <button onclick="updateOrderStatus('${order.orderId}', 'shipped')" class="btn-action btn-mark-shipped">Mark Shipped</button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-function updateOrderStatus(orderId, newStatus) {
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    const orderIndex = orders.findIndex(o => o.orderId === orderId);
-    
-    if (orderIndex !== -1) {
-        orders[orderIndex].status = newStatus;
-        localStorage.setItem('orders', JSON.stringify(orders));
-        renderAdminOrders();
-        
-        sendStatusUpdateToFormSubmit(orders[orderIndex], newStatus);
-    }
-}
-
-function sendStatusUpdateToFormSubmit(order, status) {
-    const statusLabel = status === 'paid' ? 'Payment Received' : status === 'shipped' ? 'Shipped' : status;
-    const autoresponse = [
-        `Hello ${order.customerName},`,
-        ``,
-        `Update for Order ${order.orderId}: ${statusLabel}`,
-        status === 'paid'
-            ? `We have confirmed your payment. Your order is now being processed for shipment.`
-            : `Your order has been shipped and is on its way.`,
-        ``,
-        `Summary:`,
-        `Item: ${order.productName}`,
-        `Size: ${order.size}`,
-        `Quantity: ${order.quantity}`,
-        `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
-        `Payment Method: ${order.paymentMethod.toUpperCase()}`,
-        ``,
-        `Thank you for choosing PayNDeliver.`
-    ].join('\n');
-    
-    fetch(FORMSUBMIT_ENDPOINT, {
-        method: "POST",
-        headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            _subject: `Status Update: ${order.orderId} - ${statusLabel}`,
-            _replyto: order.email,
-            email: order.email,
-            order_id: order.orderId,
-            status: statusLabel,
-            _autoresponse: autoresponse
-        })
-    })
-    .then(r => r.json())
-    .then(d => console.log("Status email via FormSubmit:", d))
-    .catch(err => console.error("Status email error:", err));
-}
-
-function exportOrders() {
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'payndeliver_orders.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-}
-
-function importOrders(event) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const importedOrders = JSON.parse(e.target.result);
-            localStorage.setItem('orders', JSON.stringify(importedOrders));
-            alert('Orders imported successfully');
-            if (typeof renderAdminOrders === 'function') renderAdminOrders();
-        } catch (err) {
-            alert('Invalid file. Please select a valid JSON export.');
-        }
-    };
-    reader.readAsText(file);
 }
