@@ -351,31 +351,7 @@ const products = [
     }
 ];
 
-// --- Google Forms Configuration ---
-// TODO: Replace with your actual Google Form Action URL
-// 1. Create a Google Form with Short Answer fields for all order details
-// 2. Click "Get pre-filled link" in the three-dot menu
-// 3. Fill dummy data, click "Get link", copy it
-// 4. Look at the URL to find "entry.XXXXXXX" for each field
-// 5. Replace the values below
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
-
-const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLqOhMI9F3uSrl1UEg8YHTt596AbcJMYurF2Ox7ICjqfXtddp0AQVqFUAVIzPGSgfPi-Sc-Mcralkf/pub?gid=0&single=true&output=csv";
-
-const FORM_ENTRY_IDS = {
-    orderId: "entry.1000000001",      // Replace with actual entry ID
-    date: "entry.1000000002",         // Replace with actual entry ID
-    customerName: "entry.1000000003", // Replace with actual entry ID
-    phone: "entry.1000000004",        // ...
-    email: "entry.1000000005",
-    address: "entry.1000000006",
-    productName: "entry.1000000007",
-    size: "entry.1000000008",
-    quantity: "entry.1000000009",
-    totalAmount: "entry.1000000010",
-    paymentMethod: "entry.1000000011",
-    paymentRef: "entry.1000000012"
- };
+// --- Removed Google Forms/Sheets integration for simplicity ---
 
  // --- FormSubmit Configuration ---
 const FORMSUBMIT_ENDPOINT = "https://formsubmit.co/ajax/pixelforge926@gmail.com";
@@ -545,52 +521,20 @@ function handleOrderSubmit(e) {
     saveOrderToLocal(orderData);
     localStorage.setItem('lastOrder', JSON.stringify(orderData));
 
-    // Check if Google Forms is configured
-    if (GOOGLE_FORM_URL.includes("YOUR_FORM_ID")) {
-        console.warn("Google Form URL not configured. Skipping submission.");
-        sendOrderToFormSubmit(orderData);
-        window.location.href = 'thankyou.html';
-        return;
-    }
-
-    // Prepare Google Forms Data
-    const googleFormData = new FormData();
-    googleFormData.append(FORM_ENTRY_IDS.orderId, orderData.orderId);
-    googleFormData.append(FORM_ENTRY_IDS.date, orderData.date);
-    googleFormData.append(FORM_ENTRY_IDS.customerName, orderData.customerName);
-    googleFormData.append(FORM_ENTRY_IDS.phone, orderData.phone);
-    googleFormData.append(FORM_ENTRY_IDS.email, orderData.email);
-    googleFormData.append(FORM_ENTRY_IDS.address, orderData.address);
-    googleFormData.append(FORM_ENTRY_IDS.productName, orderData.productName);
-    googleFormData.append(FORM_ENTRY_IDS.size, orderData.size);
-    googleFormData.append(FORM_ENTRY_IDS.quantity, orderData.quantity);
-    googleFormData.append(FORM_ENTRY_IDS.totalAmount, orderData.totalAmount);
-    googleFormData.append(FORM_ENTRY_IDS.paymentMethod, orderData.paymentMethod);
-    googleFormData.append(FORM_ENTRY_IDS.paymentRef, orderData.paymentRef);
-
     // Update UI
     const submitBtn = e.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Processing...';
-    submitBtn.disabled = true;
-
-    // Submit to Google Forms (No-CORS mode)
-    fetch(GOOGLE_FORM_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: googleFormData
-    })
-    .then(() => {
-        // Send to FormSubmit (Admin Notification)
+    if (submitBtn) {
+        submitBtn.textContent = 'Processing...';
+        submitBtn.disabled = true;
+    }
+    
+    // Send to FormSubmit (Admin Notification + User autoresponse)
+    try {
         sendOrderToFormSubmit(orderData);
+    } catch (err) {
+        alert('We could not send the email invoice. Proceeding to confirmation.');
         window.location.href = 'thankyou.html';
-    })
-    .catch((error) => {
-        console.error('Error submitting to Google Forms:', error);
-        // Fallback: still send to FormSubmit and redirect
-        sendOrderToFormSubmit(orderData);
-        window.location.href = 'thankyou.html';
-    });
+    }
 }
 
 function sendOrderToFormSubmit(order) {
@@ -659,113 +603,10 @@ function saveOrderToLocal(order) {
 }
 
 async function loadOrders() {
-    if (!GOOGLE_SHEET_CSV_URL.includes("YOUR_SHEET_CSV_URL")) {
-        try {
-            const res = await fetch(GOOGLE_SHEET_CSV_URL, { mode: 'cors' });
-            const text = await res.text();
-            const remoteOrders = parseCSVToOrders(text);
-            const statusMap = JSON.parse(localStorage.getItem('orderStatuses') || '{}');
-            remoteOrders.forEach(o => {
-                const s = statusMap[o.orderId];
-                if (s) o.status = s;
-                if (!o.status) o.status = o.paymentMethod === 'momo' ? 'pending_confirmation' : 'pending_payment';
-            });
-            const localOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-            return remoteOrders.length ? remoteOrders : localOrders;
-        } catch (e) {
-            const fallback = JSON.parse(localStorage.getItem('orders') || '[]');
-            return fallback;
-        }
-    }
-    const local = JSON.parse(localStorage.getItem('orders') || '[]');
-    return local;
+    return JSON.parse(localStorage.getItem('orders') || '[]');
 }
 
-function parseCSVToOrders(text) {
-    const rows = text.trim().split(/\r?\n/).map(splitCSVRow);
-    if (rows.length < 2) return [];
-    const headers = rows[0].map(h => normalizeKey(h));
-    const map = {
-        orderid: 'orderId',
-        date: 'date',
-        customername: 'customerName',
-        phone: 'phone',
-        email: 'email',
-        address: 'address',
-        productname: 'productName',
-        size: 'size',
-        quantity: 'quantity',
-        totalamount: 'totalAmount',
-        paymentmethod: 'paymentMethod',
-        paymentref: 'paymentRef',
-        status: 'status'
-    };
-    const idx = {};
-    headers.forEach((h, i) => {
-        const f = map[h];
-        if (f) idx[f] = i;
-    });
-    const orders = [];
-    for (let r = 1; r < rows.length; r++) {
-        const row = rows[r];
-        const get = (field) => {
-            const i = idx[field];
-            return i !== undefined ? row[i] : '';
-        };
-        const qty = get('quantity') || '1';
-        const pm = (get('paymentMethod') || '').toLowerCase();
-        orders.push({
-            orderId: get('orderId'),
-            date: get('date'),
-            customerName: get('customerName'),
-            phone: get('phone'),
-            email: get('email'),
-            address: get('address'),
-            productName: get('productName'),
-            size: get('size'),
-            quantity: qty,
-            totalAmount: get('totalAmount'),
-            paymentMethod: pm === 'momo' || pm === 'cod' ? pm : 'cod',
-            paymentRef: get('paymentRef'),
-            status: get('status') || ''
-        });
-    }
-    return orders.filter(o => o.orderId);
-}
-
-function splitCSVRow(str) {
-    const res = [];
-    let cur = '';
-    let inQuotes = false;
-    for (let i = 0; i < str.length; i++) {
-        const ch = str[i];
-        if (ch === '\"') {
-            if (inQuotes && str[i + 1] === '\"') {
-                cur += '\"';
-                i++;
-            } else {
-                inQuotes = !inQuotes;
-            }
-        } else if (ch === ',' && !inQuotes) {
-            res.push(cur);
-            cur = '';
-        } else {
-            cur += ch;
-        }
-    }
-    res.push(cur);
-    return res.map(s => s.trim());
-}
-
-function normalizeKey(s) {
-    return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-
-function setOrderStatus(orderId, status) {
-    const map = JSON.parse(localStorage.getItem('orderStatuses') || '{}');
-    map[orderId] = status;
-    localStorage.setItem('orderStatuses', JSON.stringify(map));
-}
+// Removed CSV parsing and remote status overlay helpers
 
 // --- Thank You Page Functions ---
 function setupThankYouPage() {
@@ -926,7 +767,6 @@ function updateOrderStatus(orderId, newStatus) {
     if (orderIndex !== -1) {
         orders[orderIndex].status = newStatus;
         localStorage.setItem('orders', JSON.stringify(orders));
-        setOrderStatus(orderId, newStatus);
         renderAdminOrders();
         
         sendStatusUpdateToFormSubmit(orders[orderIndex], newStatus);
