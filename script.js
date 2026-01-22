@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupHamburgerMenu();
     setupCartDrawer();
     updateCartUI();
+    setupScrollReveal();
 
     if (page === 'home') {
         setupHomePage();
