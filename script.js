@@ -1,353 +1,46 @@
 // Product Data
 const products = [
-    // Clothing & Apparel
     {
         id: 1,
-        name: "University Logo Hoodie",
-        price: 180.00,
-        momo_price: 170.00,
-        image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["M", "L", "XL", "XXL"],
-        category: "clothing",
-        description: "Premium heavyweight hoodie with your university crest (KNUST, Legon, UCC, etc.)."
+        name: "Campus Hoodie - Black",
+        price: 150.00,
+        momo_price: 150.00, // No discount for now to simplify
+        image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600",
+        category: "hoodies",
+        badge: "BESTSELLER",
+        description: "Premium cotton hoodie with embroidered campus logo. Perfect for chilly lectures.",
+        sizes: ["S", "M", "L", "XL", "XXL"]
     },
     {
         id: 2,
-        name: "Varsity Jacket",
-        price: 250.00,
-        momo_price: 240.00,
-        image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["M", "L", "XL"],
-        category: "clothing",
-        description: "Classic American-style varsity jacket with chenille patches."
+        name: "Varsity Jacket - Blue",
+        price: 200.00,
+        momo_price: 200.00,
+        image: "https://images.unsplash.com/photo-1551028919-ac7edd248ffb?auto=format&fit=crop&q=80&w=600",
+        category: "jackets",
+        badge: "NEW",
+        description: "Classic varsity jacket with leather sleeves. Stand out on campus.",
+        sizes: ["M", "L", "XL"]
     },
     {
         id: 3,
-        name: "Campus Polo Shirt",
-        price: 90.00,
-        momo_price: 85.00,
-        image: "https://images.unsplash.com/photo-1625910515337-17d9425305f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["S", "M", "L", "XL"],
-        category: "clothing",
-        description: "Smart-casual pique polo with embroidered campus logo."
+        name: "Student Cap - Grey",
+        price: 45.00,
+        momo_price: 45.00,
+        image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=600",
+        category: "accessories",
+        description: "Adjustable snapback cap. Essential for bad hair days.",
+        sizes: ["One Size"]
     },
     {
         id: 4,
-        name: "Oversized Graphic Tee",
-        price: 85.00,
-        momo_price: 80.00,
-        image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["M", "L", "XL"],
-        category: "clothing",
-        description: "Trendy oversized fit with unique campus culture graphics."
-    },
-
-    // Academic Essentials
-    {
-        id: 5,
-        name: "Laptop Sleeve (13/15\")",
-        price: 75.00,
-        momo_price: 70.00,
-        image: "https://images.unsplash.com/photo-1531938716357-2b44dcc65550?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["13 inch", "15 inch"],
-        category: "academic",
-        description: "Padded, water-resistant protection for your MacBook or laptop."
-    },
-    {
-        id: 6,
-        name: "Student Backpack",
-        price: 150.00,
-        momo_price: 140.00,
-        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "academic",
-        description: "Durable backpack with dedicated laptop compartment and multiple pockets."
-    },
-    {
-        id: 7,
-        name: "Lecture Notebook Set",
-        price: 45.00,
-        momo_price: 40.00,
-        image: "https://images.unsplash.com/photo-1544816155-12df9643f363?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["3-Pack"],
-        category: "academic",
-        description: "Set of 3 A4 ruled notebooks with subject-specific covers."
-    },
-    {
-        id: 8,
-        name: "Scientific Calculator",
-        price: 120.00,
-        momo_price: 115.00,
-        image: "https://images.unsplash.com/photo-1574607383476-f2c711c771d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "academic",
-        description: "Essential scientific calculator for engineering and science students."
-    },
-
-    // Hostel & Dorm Life
-    {
-        id: 9,
-        name: "Shower Caddy",
-        price: 35.00,
-        momo_price: 30.00,
-        image: "https://images.unsplash.com/photo-1631729364136-50a99267191e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["One Size"],
-        category: "hostel",
-        description: "Portable mesh basket for carrying toiletries to the bathroom."
-    },
-    {
-        id: 10,
-        name: "Bedding Set (Single)",
-        price: 110.00,
-        momo_price: 100.00,
-        image: "https://images.unsplash.com/photo-1522771753035-1a5b6562f3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Single Bed"],
-        category: "hostel",
-        description: "Complete set: fitted sheet, flat sheet, and matching pillowcase."
-    },
-    {
-        id: 11,
-        name: "Electric Kettle (1.5L)",
-        price: 95.00,
-        momo_price: 90.00,
-        image: "https://images.unsplash.com/photo-1585220177021-d576a445070a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["1.5L"],
-        category: "hostel",
-        description: "Fast-boiling electric kettle for tea, coffee, and noodles."
-    },
-    {
-        id: 12,
-        name: "Extension Cord (4-Socket)",
+        name: "Graphic Tee - White",
         price: 60.00,
-        momo_price: 55.00,
-        image: "https://images.unsplash.com/photo-1558238618-936655c659e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "hostel",
-        description: "Surge-protected extension board to charge all your devices."
-    },
-
-    // Personal Care
-    {
-        id: 13,
-        name: "Sanitary Pads Bundle",
-        price: 45.00,
-        momo_price: 40.00,
-        image: "https://images.unsplash.com/photo-1626423450587-c5806371c356?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Mixed Pack"],
-        category: "personal",
-        description: "Variety pack including Day, Night, and Panty Liners (Ladycare/Softy)."
-    },
-    {
-        id: 14,
-        name: "Men's Grooming Kit",
-        price: 65.00,
         momo_price: 60.00,
-        image: "https://images.unsplash.com/photo-1621600411688-4be93cd68504?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "personal",
-        description: "Includes razors, shaving cream, deodorant, and face wash."
-    },
-
-    // Gadgets & Tech
-    {
-        id: 15,
-        name: "Power Bank (20,000mAh)",
-        price: 150.00,
-        momo_price: 140.00,
-        image: "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["20k mAh"],
-        category: "gadgets",
-        description: "High-capacity portable charger. Never say 'No Light, No Problem'."
-    },
-    {
-        id: 16,
-        name: "Wireless Earbuds",
-        price: 120.00,
-        momo_price: 110.00,
-        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["One Size"],
-        category: "gadgets",
-        description: "Budget-friendly bluetooth earphones with deep bass and long battery life."
-    },
-    {
-        id: 17,
-        name: "Phone Case",
-        price: 35.00,
-        momo_price: 30.00,
-        image: "https://images.unsplash.com/photo-1586105251261-72a756497a11?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["iPhone", "Samsung", "Tecno"],
-        category: "gadgets",
-        description: "Durable silicone case available for all major phone models."
-    },
-
-    // Food & Snacks
-    {
-        id: 18,
-        name: "Exam Survival Snack Pack",
-        price: 55.00,
-        momo_price: 50.00,
-        image: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Bundle"],
-        category: "food",
-        description: "Indomie, biscuits, milo, sugar, and groundnuts. Everything you need."
-    },
-
-    // Campus Culture
-    {
-        id: 19,
-        name: "\"Lecturer Has Arrived\" Mug",
-        price: 40.00,
-        momo_price: 35.00,
-        image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "culture",
-        description: "Ceramic mug for your early morning lectures."
-    },
-    {
-        id: 20,
-        name: "\"Final Year Loading\" Hoodie",
-        price: 185.00,
-        momo_price: 175.00,
-        image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["M", "L", "XL"],
-        category: "culture",
-        description: "Celebrate the journey. Premium hoodie with bold back print."
-    },
-
-    // --- Health & Wellness ---
-    {
-        id: 21,
-        name: "Paracetamol (Pack)",
-        price: 15.00,
-        momo_price: 14.00,
-        image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "health",
-        description: "Essential pain relief. Keep it handy for headaches or fever."
-    },
-    {
-        id: 22,
-        name: "First Aid Kit (Basic)",
-        price: 45.00,
-        momo_price: 40.00,
-        image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "health",
-        description: "Includes band-aids, antiseptic wipes, gauze, and tape."
-    },
-    {
-        id: 23,
-        name: "Vitamin C Tablets",
-        price: 25.00,
-        momo_price: 22.00,
-        image: "https://images.unsplash.com/photo-1550572017-edd951aa8f72?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Bottle"],
-        category: "health",
-        description: "Boost your immunity during stressful exam periods."
-    },
-    {
-        id: 24,
-        name: "Pain Relief Gel",
-        price: 30.00,
-        momo_price: 28.00,
-        image: "https://images.unsplash.com/photo-1556228720-198755648834?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Tube"],
-        category: "health",
-        description: "Fast-acting relief for muscle aches and sports injuries."
-    },
-    {
-        id: 25,
-        name: "ORS Sachets (Pack of 5)",
-        price: 12.00,
-        momo_price: 10.00,
-        image: "https://images.unsplash.com/photo-1583947215259-38e31be8751f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Pack"],
-        category: "health",
-        description: "Essential for rehydration. Stay safe and hydrated."
-    },
-
-    // --- Entertainment ---
-    {
-        id: 26,
-        name: "Standard Playing Cards",
-        price: 20.00,
-        momo_price: 18.00,
-        image: "https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "entertainment",
-        description: "Classic deck for poker, spar, and other hostel games."
-    },
-    {
-        id: 27,
-        name: "Board Game Collection (Ludo/Chess)",
-        price: 75.00,
-        momo_price: 70.00,
-        image: "https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Set"],
-        category: "entertainment",
-        description: "Perfect for game nights. Includes Ludo, Chess, and Checkers."
-    },
-    {
-        id: 28,
-        name: "African Novel Selection",
-        price: 55.00,
-        momo_price: 50.00,
-        image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Paperback"],
-        category: "entertainment",
-        description: "Curated selection of top novels by African authors."
-    },
-    {
-        id: 29,
-        name: "Bluetooth Game Controller",
-        price: 120.00,
-        momo_price: 110.00,
-        image: "https://images.unsplash.com/photo-1592840496694-26d035b52b48?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Standard"],
-        category: "entertainment",
-        description: "Connect to your phone or laptop for mobile gaming."
-    },
-    {
-        id: 30,
-        name: "Movie Night Kit",
-        price: 65.00,
-        momo_price: 60.00,
-        image: "https://images.unsplash.com/photo-1572177191856-3cde618dee1f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Box"],
-        category: "entertainment",
-        description: "Includes gourmet popcorn, assorted drinks, and chocolates."
-    },
-
-    // --- Bundles ---
-    {
-        id: 31,
-        name: "Fresher's Starter Pack",
-        price: 180.00,
-        momo_price: 170.00,
-        image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Bundle"],
-        category: "bundles",
-        description: "The ultimate welcome kit: Hoodie, notepad, pen, and water bottle."
-    },
-    {
-        id: 32,
-        name: "Hostel Essentials Bundle",
-        price: 250.00,
-        momo_price: 240.00,
-        image: "https://images.unsplash.com/photo-1555529733-0e670560f7e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Bundle"],
-        category: "bundles",
-        description: "Settling in? Get a bedding set, electric kettle, and storage box."
-    },
-    {
-        id: 33,
-        name: "Exam Survival Kit",
-        price: 85.00,
-        momo_price: 80.00,
-        image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-        sizes: ["Kit"],
-        category: "bundles",
-        description: "Pens, sticky notes, energy drink, and pain relief for late nights."
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=600",
+        category: "t-shirts",
+        description: "Soft cotton tee with unique campus art graphic.",
+        sizes: ["S", "M", "L", "XL"]
     }
 ];
 
@@ -361,19 +54,172 @@ const PRODUCT_FALLBACK_IMAGE = "https://placehold.co/800x600?text=PayNDeliver+Pr
 // Formatting Helper
 const formatPrice = (amount) => `GHC ${amount.toFixed(2)}`;
 
+// Cart State Management
+let cart = [];
+try {
+    cart = JSON.parse(localStorage.getItem('payndeliver_cart')) || [];
+} catch (e) {
+    console.warn("LocalStorage access failed. Cart will not persist.", e);
+    cart = [];
+}
+
+function saveCart() {
+    try {
+        localStorage.setItem('payndeliver_cart', JSON.stringify(cart));
+    } catch (e) {
+        console.warn("Could not save cart to LocalStorage.", e);
+    }
+    updateCartUI();
+    if (document.body.dataset.page === 'order') {
+        setupOrderPage();
+    }
+}
+
+function addToCart(product, size, qty) {
+    const existingItem = cart.find(item => item.id === product.id && item.size === size);
+    
+    if (existingItem) {
+        existingItem.quantity += parseInt(qty);
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            momo_price: product.momo_price,
+            image: product.image,
+            size: size,
+            quantity: parseInt(qty)
+        });
+    }
+    saveCart();
+    // Open cart drawer
+    document.getElementById('cart-overlay')?.classList.add('active');
+    document.querySelector('.cart-drawer')?.classList.add('active');
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+}
+
+function getCartTotal() {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+}
+
+function updateCartUI() {
+    // Update Badge
+    const countEls = document.querySelectorAll('.cart-count');
+    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+    countEls.forEach(el => el.textContent = totalQty);
+
+    // Update Cart Drawer Items
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total-price');
+    
+    if (cartItemsContainer && cartTotalEl) {
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="text-align: center; margin-top: 2rem; color: #888;">Your cart is empty.</p>';
+            cartTotalEl.textContent = formatPrice(0);
+        } else {
+            cartItemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <img src="${item.image || PRODUCT_FALLBACK_IMAGE}" alt="${item.name}" onerror="this.src='${PRODUCT_FALLBACK_IMAGE}'">
+                    <div class="cart-item-details">
+                        <h3>${item.name}</h3>
+                        <p>Size: ${item.size} | Qty: ${item.quantity}</p>
+                        <p>${formatPrice(item.price * item.quantity)}</p>
+                        <button class="cart-item-remove" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            cartTotalEl.textContent = formatPrice(getCartTotal());
+        }
+    }
+}
+
 // DOM Elements & Page Logic
 document.addEventListener('DOMContentLoaded', () => {
     const page = document.body.dataset.page;
 
+    setupHamburgerMenu();
+    setupCartDrawer();
+    updateCartUI();
+
     if (page === 'home') {
         setupHomePage();
+        setupProductModal();
     } else if (page === 'order') {
         setupOrderPage();
     } else if (page === 'thankyou') {
         setupThankYouPage();
     }
-    setupScrollReveal();
 });
+
+function setupHamburgerMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (hamburger && navLinks) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+}
+
+function setupCartDrawer() {
+    const icon = document.querySelectorAll('.cart-icon-container');
+    const overlay = document.getElementById('cart-overlay');
+    const drawer = document.querySelector('.cart-drawer');
+    const closeBtn = document.getElementById('close-cart');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    // Logic fix: Allow cart icon click even if overlay is missing (navigate to order page)
+    icon.forEach(ic => {
+        ic.addEventListener('click', () => {
+            if (overlay) {
+                overlay.classList.add('active');
+                drawer.classList.add('active');
+            } else {
+                window.location.href = 'order.html';
+            }
+        });
+    });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            drawer.classList.remove('active');
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+                drawer.classList.remove('active');
+            }
+        });
+    }
+    
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            window.location.href = 'order.html';
+        });
+    }
+}
 
 // --- Home Page Functions ---
 const PAGE_SIZE = 8;
@@ -386,35 +232,139 @@ function setupHomePage() {
     setupLoadMore();
 }
 
+function setupProductModal() {
+    const modalOverlay = document.getElementById('product-modal-overlay');
+    const modalClose = document.getElementById('modal-close');
+    
+    if (modalClose) {
+        modalClose.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+        });
+    }
+}
+
+function openProductModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const modalOverlay = document.getElementById('product-modal-overlay');
+    const img = document.getElementById('modal-img');
+    const title = document.getElementById('modal-title');
+    const price = document.getElementById('modal-price');
+    const desc = document.getElementById('modal-desc');
+    const sizeSelect = document.getElementById('modal-size');
+    const qtyInput = document.getElementById('modal-qty');
+    const addBtn = document.getElementById('modal-add-to-cart');
+    const buyBtn = document.getElementById('modal-buy-now');
+
+    img.src = product.image || PRODUCT_FALLBACK_IMAGE;
+    img.onerror = () => img.src = PRODUCT_FALLBACK_IMAGE;
+    title.textContent = product.name;
+    price.textContent = formatPrice(product.price);
+    desc.textContent = product.description || "No description available.";
+    
+    // Reset inputs
+    qtyInput.value = 1;
+    sizeSelect.innerHTML = product.sizes && product.sizes.length > 0 
+        ? product.sizes.map(s => `<option value="${s}">${s}</option>`).join('')
+        : '<option value="One Size">One Size</option>';
+
+    // Button Actions
+    addBtn.onclick = () => {
+        addToCart(product, sizeSelect.value, qtyInput.value);
+        modalOverlay.classList.remove('active');
+    };
+
+    buyBtn.onclick = () => {
+        // Direct buy: Clear cart? Or add and go to checkout?
+        // Usually "Buy Now" means checkout this item immediately.
+        // Let's add to cart and go to checkout.
+        addToCart(product, sizeSelect.value, qtyInput.value);
+        window.location.href = 'order.html';
+    };
+
+    modalOverlay.classList.add('active');
+}
+
 function renderProducts(category = 'all', append = false) {
     const grid = document.getElementById('product-grid');
+    const loadMoreBtn = document.getElementById('load-more');
     if (!grid) return;
 
-    const list = category === 'all' ? products : products.filter(p => p.category === category);
-    const slice = list.slice(currentOffset, currentOffset + PAGE_SIZE);
+    try {
+        if (!append) {
+            grid.innerHTML = '';
+            currentOffset = 0;
+        }
 
-    const html = slice.map(product => `
-        <div class="product-card">
-            <img src="${product.image || PRODUCT_FALLBACK_IMAGE}" alt="${product.name}" class="product-image" onerror="this.src='${PRODUCT_FALLBACK_IMAGE}'">
-            <div class="product-info">
-                <h3 class="product-name">${product.name}</h3>
-                <p class="product-price">${formatPrice(product.price)}</p>
-                <a href="order.html?id=${product.id}" class="btn">Purchase</a>
-            </div>
-        </div>
-    `).join('');
-    if (append) {
-        grid.insertAdjacentHTML('beforeend', html);
-    } else {
-        grid.innerHTML = html;
+        const filtered = category === 'all' 
+            ? products 
+            : products.filter(p => p.category === category);
+
+        // Simple pagination logic
+        const pagedProducts = filtered.slice(0, currentOffset + PAGE_SIZE);
+        
+        // Hide Load More if all products are shown
+        if (loadMoreBtn) {
+            if (pagedProducts.length >= filtered.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+        }
+
+        if (pagedProducts.length === 0) {
+            grid.innerHTML = '<p class="text-secondary" style="grid-column: 1/-1; text-align: center; padding: 40px;">No products found in this category.</p>';
+            return;
+        }
+
+        // If appending, we only want to render the NEW items.
+        // But simplistic approach: Clear and Render All up to currentOffset + PAGE_SIZE
+        // To support true 'append', we need to slice correctly.
+        // Let's stick to "Render All visible" for simplicity as grid.innerHTML = '' is fast enough for small lists.
+        
+        // If we are appending, we shouldn't clear grid.
+        // But my logic above `if (!append) grid.innerHTML = '';` handles that.
+        // However, if append is true, I need to render ONLY the new ones.
+        // OR, easier: Always clear and render (0 to currentLimit).
+        
+        // Let's change strategy: Always render everything from 0 to limit.
+        grid.innerHTML = ''; 
+        pagedProducts.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            card.innerHTML = `
+                <div class="product-image-container">
+                    <img src="${product.image || PRODUCT_FALLBACK_IMAGE}" alt="${product.name}" class="product-image" onerror="this.src='${PRODUCT_FALLBACK_IMAGE}'">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                </div>
+                <div class="product-info">
+                    <div class="product-meta">
+                        <span class="product-category">${product.category}</span>
+                        <span class="product-price">${formatPrice(product.price)}</span>
+                    </div>
+                    <h3 class="product-title">${product.name}</h3>
+                    <button class="btn btn-primary" onclick="openProductModal(${product.id})" style="width: 100%; margin-top: 10px;">View Options</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+    } catch (e) {
+        console.error("Error rendering products:", e);
+        grid.innerHTML = '<p style="color: red; text-align: center;">Unable to load products. Please try refreshing.</p>';
     }
-    const hasMore = currentOffset + PAGE_SIZE < list.length;
-    const btn = document.getElementById('load-more');
-    if (btn) btn.style.display = hasMore ? 'inline-flex' : 'none';
 }
 
 function setupCategoryFilters() {
-    const filters = document.querySelectorAll('.category-btn');
+    const filters = document.querySelectorAll('.filter-btn');
     filters.forEach(btn => {
         btn.addEventListener('click', () => {
             filters.forEach(f => f.classList.remove('active'));
@@ -454,273 +404,103 @@ function setupScrollReveal() {
 }
 // --- Order Page Functions ---
 function setupOrderPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = parseInt(urlParams.get('id'));
-    const product = products.find(p => p.id === productId);
+    const orderSummary = document.getElementById('order-summary');
+    const form = document.getElementById('checkout-form');
 
-    if (!product) {
-        window.location.href = 'index.html';
+    if (!cart || cart.length === 0) {
+        orderSummary.innerHTML = '<p>Your cart is empty. Please add items to your cart.</p>';
         return;
     }
 
-    // Render Product Details
-    document.getElementById('product-image').src = product.image || PRODUCT_FALLBACK_IMAGE;
-    document.getElementById('product-image').onerror = () => {
-        document.getElementById('product-image').src = PRODUCT_FALLBACK_IMAGE;
-    };
-    document.getElementById('product-name').textContent = product.name;
-    document.getElementById('product-desc').textContent = product.description;
+    let total = 0;
     
-    // Populate Sizes
-    const sizeSelect = document.getElementById('size');
-    sizeSelect.innerHTML = product.sizes.map(s => `<option value="${s}">${s}</option>`).join('');
-
-    // Price Updating Logic
-    const priceDisplay = document.getElementById('price-display');
-    const paymentRadios = document.querySelectorAll('input[name="payment"]');
-    const momoInstructions = document.getElementById('momo-instructions');
-    const refInputContainer = document.getElementById('ref-container');
-    const refInput = document.getElementById('payment-ref');
-
-    function updatePrice() {
-        const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
-        const qty = parseInt(document.getElementById('quantity').value) || 1;
+    // Generate Order Summary HTML
+    const itemsHtml = cart.map(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
         
-        let unitPrice = product.price;
-        if (paymentMethod === 'momo') {
-            unitPrice = product.momo_price;
-            momoInstructions.style.display = 'block';
-            refInputContainer.style.display = 'block';
-            refInput.required = true;
-        } else {
-            momoInstructions.style.display = 'none';
-            refInputContainer.style.display = 'none';
-            refInput.required = false;
-        }
-        
-        const total = unitPrice * qty;
-        priceDisplay.textContent = formatPrice(total);
-        document.getElementById('total-amount').value = total.toFixed(2);
-    }
+        return `
+            <div class="summary-item">
+                <img src="${item.image || PRODUCT_FALLBACK_IMAGE}" alt="${item.name}" onerror="this.src='${PRODUCT_FALLBACK_IMAGE}'">
+                <div class="summary-item-details">
+                    <h3 class="summary-item-title">${item.name}</h3>
+                    <p class="summary-item-meta">Size: ${item.size} | Qty: ${item.quantity}</p>
+                    <p class="summary-item-price">${formatPrice(itemTotal)}</p>
+                </div>
+            </div>
+        `;
+    }).join('');
 
-    paymentRadios.forEach(radio => radio.addEventListener('change', updatePrice));
-    document.getElementById('quantity').addEventListener('input', updatePrice);
-    
-    // Initial update (default to COD usually or no selection)
-    updatePrice();
+    orderSummary.innerHTML = `
+        <h2 class="summary-title">Order Summary</h2>
+        ${itemsHtml}
+        <div class="summary-total-row">
+            <span>Total</span>
+            <span>${formatPrice(total)}</span>
+        </div>
+    `;
 
-    // Form Submission
-    document.getElementById('order-form').addEventListener('submit', handleOrderSubmit);
-}
+    // Handle Form Submission (WhatsApp Integration)
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
 
-function generateOrderId() {
-    const date = new Date().toISOString().slice(0,10).replace(/-/g,'');
-    const random = Math.floor(Math.random() * 9000) + 1000;
-    return `ORD-${date}-${random}`;
-}
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const hostel = document.getElementById('hostel').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
-function handleOrderSubmit(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(e.target);
-    const orderId = generateOrderId();
-    
-    const orderData = {
-        orderId: orderId,
-        date: new Date().toISOString(),
-        productName: document.getElementById('product-name').textContent,
-        size: formData.get('size'),
-        quantity: formData.get('quantity'),
-        paymentMethod: formData.get('payment'),
-        totalAmount: document.getElementById('total-amount').value,
-        customerName: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        address: formData.get('address'),
-        paymentRef: formData.get('payment-ref') || 'N/A',
-        status: formData.get('payment') === 'momo' ? 'pending_confirmation' : 'pending_payment'
-    };
+            // Construct WhatsApp Message
+            let message = `*NEW ORDER FROM PAYNDELIVER* 📦\n\n`;
+            message += `*Customer Details:*\n`;
+            message += `👤 Name: ${name}\n`;
+            message += `📞 Phone: ${phone}\n`;
+            message += `📧 Email: ${email}\n`;
+            message += `📍 Location: ${hostel}\n`;
+            message += `💳 Payment: ${paymentMethod === 'MOMO' ? 'Mobile Money' : 'Cash on Delivery'}\n\n`;
+            
+            message += `*Order Summary:*\n`;
+            cart.forEach(item => {
+                message += `▫️ ${item.name} (Size: ${item.size}) x${item.quantity} - ${formatPrice(item.price * item.quantity)}\n`;
+            });
+            
+            message += `\n*TOTAL: ${formatPrice(total)}*`;
 
-    // Mobile Money Validation
-    if (orderData.paymentMethod === 'momo') {
-        const ref = orderData.paymentRef.replace(/[^a-zA-Z0-9]/g, ''); // Clean special chars
-        
-        if (!ref || ref.length < 8) {
-            alert('Please enter a valid Transaction ID (at least 8 characters) from your SMS confirmation.');
-            return;
-        }
-        orderData.paymentRef = ref.toUpperCase(); // Normalize
-    }
+            // Encode and Open WhatsApp
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappNumber = "233544130026"; // 0544130026 -> 233544130026
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Save to LocalStorage (Simulating Database for User History)
-    saveOrderToLocal(orderData);
-    localStorage.setItem('lastOrder', JSON.stringify(orderData));
-
-    // Update UI
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.textContent = 'Processing...';
-        submitBtn.disabled = true;
-    }
-    
-    // Send to FormSubmit (Admin Notification + User autoresponse)
-    try {
-        sendOrderToFormSubmit(orderData);
-    } catch (err) {
-        alert('We could not send the email invoice. Proceeding to confirmation.');
-        window.location.href = 'thankyou.html';
+            // Clear Cart and Redirect
+            localStorage.setItem('payndeliver_cart_pending_clear', 'true');
+            
+            // We open WhatsApp in a new tab usually, but for "Submit" it's better to just go there.
+            // However, we also want to show the Thank You page.
+            // Flow: Open WhatsApp -> Redirect current page to Thank You?
+            // Browsers might block popups.
+            // Safer: Redirect current tab to WhatsApp.
+            
+            window.location.href = whatsappUrl;
+            
+            // Note: Since we are redirecting away, we can't easily "clear cart" after they come back unless we assume they sent it.
+            // Let's clear it now.
+            cart = [];
+            saveCart();
+        });
     }
 }
-
-function sendOrderToFormSubmit(order) {
-    const thankyouUrl = `${location.origin}${location.pathname.replace(/[^/]*$/, '')}thankyou.html`;
-    const payload = {
-        _subject: `New Order: ${order.orderId}`,
-        _replyto: order.email,
-        _template: 'table',
-        email: order.email,
-        customerName: order.customerName,
-        orderId: order.orderId,
-        date: order.date,
-        productName: order.productName,
-        size: order.size,
-        quantity: order.quantity,
-        totalAmount: order.totalAmount,
-        paymentMethod: order.paymentMethod,
-        paymentRef: order.paymentRef,
-        phone: order.phone,
-        address: order.address,
-        _autoresponse: [
-            `Thank you for your order, ${order.customerName}!`,
-            ``,
-            `Order Reference: ${order.orderId}`,
-            `Item: ${order.productName}`,
-            `Size: ${order.size}`,
-            `Quantity: ${order.quantity}`,
-            `Total: GHC ${parseFloat(order.totalAmount).toFixed(2)}`,
-            `Payment Method: ${order.paymentMethod.toUpperCase()}`,
-            `Transaction ID: ${order.paymentRef}`,
-            ``,
-            `Shipping Address:`,
-            `${order.address}`,
-            ``,
-            `We will contact you shortly with delivery details.`,
-            `PayNDeliver`
-        ].join('\n')
-    };
-    fetch(FORMSUBMIT_ENDPOINT, {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then((res) => {
-        if (!res.ok) throw new Error('submit_failed');
-        window.location.href = thankyouUrl;
-    })
-    .catch(() => {
-        const form = document.createElement('form');
-        form.action = 'https://formsubmit.co/pixelforge926@gmail.com';
-        form.method = 'POST';
-        form.style.display = 'none';
-        const add = (name, value) => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = name;
-            input.value = value ?? '';
-            form.appendChild(input);
-        };
-        add('email', order.email);
-        add('customerName', order.customerName);
-        add('orderId', order.orderId);
-        add('date', order.date);
-        add('productName', order.productName);
-        add('size', order.size);
-        add('quantity', order.quantity);
-        add('totalAmount', order.totalAmount);
-        add('paymentMethod', order.paymentMethod);
-        add('paymentRef', order.paymentRef);
-        add('phone', order.phone);
-        add('address', order.address);
-        add('_subject', `New Order: ${order.orderId}`);
-        add('_template', 'table');
-        add('_replyto', order.email);
-        add('_captcha', 'false');
-        add('_next', thankyouUrl);
-        add('_autoresponse', payload._autoresponse);
-        document.body.appendChild(form);
-        form.submit();
-    });
-}
-
-function saveOrderToLocal(order) {
-    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-    orders.push(order);
-    localStorage.setItem('orders', JSON.stringify(orders));
-}
-
-async function loadOrders() {
-    return JSON.parse(localStorage.getItem('orders') || '[]');
-}
-
-// Removed CSV parsing and remote status overlay helpers
 
 // --- Thank You Page Functions ---
 function setupThankYouPage() {
-    const lastOrder = JSON.parse(localStorage.getItem('lastOrder'));
-    if (!lastOrder) {
-        document.getElementById('order-details').innerHTML = '<p>No recent order found.</p>';
-        return;
-    }
-
-    document.getElementById('order-id-display').textContent = lastOrder.orderId;
-    
-    const messageContainer = document.getElementById('confirmation-message');
-    if (lastOrder.paymentMethod === 'cod') {
-        messageContainer.innerHTML = `<p class="alert alert-info">Your order is confirmed. Payment will be collected upon delivery.</p>`;
-    } else {
-        messageContainer.innerHTML = `<p class="alert alert-warning">Please ensure your Mobile Money transfer is complete. We will ship upon confirmation.</p>`;
-    }
-
-    // Feedback Form Logic
-    const feedbackForm = document.getElementById('feedback-form');
-    if (feedbackForm) {
-        feedbackForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const rating = document.getElementById('rating').value;
-            const comment = document.getElementById('feedback-comment').value;
-            
-            const btn = feedbackForm.querySelector('button');
-            btn.textContent = 'Sending...';
-            btn.disabled = true;
-
-            fetch(FORMSUBMIT_ENDPOINT, {
-                method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: `New Feedback from ${lastOrder.customerName}`,
-                    _replyto: lastOrder.email || "no-reply@example.com",
-                    rating: rating + " Stars",
-                    comment: comment,
-                    order_id: lastOrder.orderId
-                })
-            })
-            .then(() => {
-                alert("Thank you! Your feedback has been sent.");
-                feedbackForm.reset();
-                btn.textContent = 'Sent';
-            })
-            .catch((error) => {
-                console.error("Feedback failed:", error);
-                alert("Something went wrong. Please try again.");
-                btn.textContent = 'Send Feedback';
-                btn.disabled = false;
-            });
-        });
+    try {
+        if (localStorage.getItem('payndeliver_cart_pending_clear') === 'true') {
+            localStorage.removeItem('payndeliver_cart');
+            localStorage.removeItem('payndeliver_cart_pending_clear');
+            cart = [];
+            updateCartUI();
+        }
+    } catch (e) {
+        console.warn("Error accessing LocalStorage on Thank You page:", e);
     }
 }

@@ -10,58 +10,76 @@
     <header>
         <nav>
             <a href="index.html" class="logo">PayNDeliver</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Collection</a></li>
-                <li><a href="about.html">Our Story</a></li>
-                <li><a href="contact.html">Support</a></li>
-            </ul>
+            
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html">Collection</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="contact.html">Support</a></li>
+                </ul>
+
+                <div class="cart-icon-container" id="cart-icon">
+                    <svg class="cart-icon" viewBox="0 0 24 24">
+                        <path d="M6 6h15l-1.68 7.57a2.5 2.5 0 0 1-2.44 1.93H9.17a2.5 2.5 0 0 1-2.43-1.92L4.5 2H2"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="18" cy="20" r="1"></circle>
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </nav>
     </header>
 
     <main>
         <section class="hero">
-            <h1>Support Hub</h1>
+            <h1>Support Hub.</h1>
             <p>Fast, friendly help for orders, payments, and delivery.</p>
         </section>
 
-        <section class="section section-white glass reveal">
+        <section class="section">
             <div class="section-header">
-                <h2 class="section-title text-white">Get in Touch</h2>
-                <span class="badge badge-light">Response within 24 hours</span>
+                <h2 class="section-title">Get in Touch</h2>
+                <span class="text-secondary" style="text-transform: uppercase; font-weight: 700;">Response within 24 hours</span>
             </div>
             <div class="grid-3">
-                <div class="card card-soft">
-                    <div class="icon-card-title"><span class="icon-dot"></span><h3 style="font-size:1.1rem;">Phone / WhatsApp</h3></div>
-                    <p class="text-body" style="font-size:1.15rem;">+233 123 456 789</p>
+                <div class="card">
+                    <h3 style="font-size:1.2rem; text-transform: uppercase; font-weight: 900; margin-bottom: 0.5rem;">Phone / WhatsApp</h3>
+                    <p class="text-secondary" style="font-size:1.1rem;">+233 123 456 789</p>
                 </div>
-                <div class="card card-soft">
-                    <div class="icon-card-title"><span class="icon-dot"></span><h3 style="font-size:1.1rem;">Email</h3></div>
-                    <p class="text-body" style="font-size:1.15rem;">support@payndeliver.com</p>
+                <div class="card">
+                    <h3 style="font-size:1.2rem; text-transform: uppercase; font-weight: 900; margin-bottom: 0.5rem;">Email</h3>
+                    <p class="text-secondary" style="font-size:1.1rem;">support@payndeliver.com</p>
                 </div>
-                <div class="card card-soft">
-                    <div class="icon-card-title"><span class="icon-dot"></span><h3 style="font-size:1.1rem;">Hours</h3></div>
-                    <p class="text-body">Mon–Sat, 9:00–18:00</p>
+                <div class="card">
+                    <h3 style="font-size:1.2rem; text-transform: uppercase; font-weight: 900; margin-bottom: 0.5rem;">Hours</h3>
+                    <p class="text-secondary">Mon–Sat, 9:00–18:00</p>
                 </div>
             </div>
         </section>
 
-        <section class="section section-dark glass reveal">
+        <section class="section-dark">
             <div class="section-header">
                 <h2 class="section-title">Quick Help</h2>
-                <p class="section-subtitle">Common requests handled quickly</p>
+                <p class="text-secondary" style="color: #ccc;">Common requests handled quickly</p>
             </div>
             <div class="grid-2">
-                <div class="card-contrast">
-                    <h3 style="font-size:1.2rem; margin-bottom:0.5rem;">Order Assistance</h3>
-                    <ul style="margin-left:1.25rem; line-height:1.9;">
+                <div>
+                    <h3 style="font-size:1.5rem; text-transform: uppercase; font-weight: 900; margin-bottom: 1rem;">Order Assistance</h3>
+                    <ul style="margin-left:1.25rem; line-height:2;">
                         <li>Update delivery address</li>
                         <li>Change payment method</li>
                         <li>Check order status</li>
                     </ul>
                 </div>
-                <div class="card-contrast">
-                    <h3 style="font-size:1.2rem; margin-bottom:0.5rem;">Payments</h3>
-                    <ul style="margin-left:1.25rem; line-height:1.9;">
+                <div>
+                    <h3 style="font-size:1.5rem; text-transform: uppercase; font-weight: 900; margin-bottom: 1rem;">Payments</h3>
+                    <ul style="margin-left:1.25rem; line-height:2;">
                         <li>Mobile Money verification</li>
                         <li>Cash on Delivery questions</li>
                         <li>Invoice or receipts</li>
@@ -70,38 +88,38 @@
             </div>
         </section>
 
-        <section class="section section-white glass reveal">
+        <section class="section">
             <div class="section-header">
-                <h2 class="section-title text-white">FAQs</h2>
-                <p class="section-subtitle text-white">Answers to common questions</p>
+                <h2 class="section-title">FAQs</h2>
+                <p class="text-secondary">Answers to common questions</p>
             </div>
             <div class="grid-2">
-                <div class="card card-soft">
-                    <h4 style="font-size:1.1rem; margin-bottom:0.25rem;">How long does delivery take?</h4>
-                    <p class="text-body">3–5 business days depending on location.</p>
+                <div class="card">
+                    <h4 style="font-size:1.1rem; margin-bottom:0.5rem; font-weight: 900;">How long does delivery take?</h4>
+                    <p class="text-secondary">3–5 business days depending on location.</p>
                 </div>
-                <div class="card card-soft">
-                    <h4 style="font-size:1.1rem; margin-bottom:0.25rem;">If I select Mobile Money and don’t pay immediately?</h4>
-                    <p class="text-body">Order is set to Pending Confirmation until payment is verified.</p>
+                <div class="card">
+                    <h4 style="font-size:1.1rem; margin-bottom:0.5rem; font-weight: 900;">If I select Mobile Money and don’t pay immediately?</h4>
+                    <p class="text-secondary">Order is set to Pending Confirmation until payment is verified.</p>
                 </div>
-                <div class="card card-soft">
-                    <h4 style="font-size:1.1rem; margin-bottom:0.25rem;">Can I change payment method?</h4>
-                    <p class="text-body">Contact us immediately to switch between COD and MoMo.</p>
+                <div class="card">
+                    <h4 style="font-size:1.1rem; margin-bottom:0.5rem; font-weight: 900;">Can I change payment method?</h4>
+                    <p class="text-secondary">Contact us immediately to switch between COD and MoMo.</p>
                 </div>
-                <div class="card card-soft">
-                    <h4 style="font-size:1.1rem; margin-bottom:0.25rem;">Which areas do you deliver to?</h4>
-                    <p class="text-body">Accra, Tema, Kumasi, Takoradi, and Cape Coast.</p>
+                <div class="card">
+                    <h4 style="font-size:1.1rem; margin-bottom:0.5rem; font-weight: 900;">Which areas do you deliver to?</h4>
+                    <p class="text-secondary">Accra, Tema, Kumasi, Takoradi, and Cape Coast.</p>
                 </div>
             </div>
         </section>
 
-        <section class="section section-white glass reveal">
+        <section class="section" style="text-align: center; background: #f5f5f5;">
             <div class="cta-strip">
-                <div>
-                    <h3 style="font-size:1.25rem;">Need urgent help?</h3>
-                    <p class="text-body" style="opacity:0.85;">Call or WhatsApp and we’ll assist right away.</p>
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="font-size:2rem; text-transform: uppercase; font-weight: 900; margin-bottom: 1rem;">Need urgent help?</h3>
+                    <p class="text-secondary">Call or WhatsApp and we’ll assist right away.</p>
                 </div>
-                <a href="index.html" class="btn">Shop Collection</a>
+                <a href="index.html" class="btn btn-primary">Shop Collection</a>
             </div>
         </section>
     </main>
@@ -109,6 +127,28 @@
     <footer>
         <p>&copy; 2026 PayNDeliver. Designed for Excellence.</p>
     </footer>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart</h2>
+                <button class="close-cart" id="close-cart">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be injected here -->
+                <p style="text-align: center; margin-top: 2rem; color: #888;">Your cart is empty.</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span id="cart-total-price">GHC 0.00</span>
+                </div>
+                <button id="checkout-btn" class="btn btn-primary" style="width: 100%;">Checkout</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

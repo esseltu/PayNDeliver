@@ -10,135 +10,92 @@
     <header>
         <nav>
             <a href="index.html" class="logo">PayNDeliver</a>
-            <ul class="nav-links">
-                <li><a href="index.html">Collection</a></li>
-                <li><a href="about.html">Our Story</a></li>
-                <li><a href="contact.html">Support</a></li>
-            </ul>
+            
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="index.html">Collection</a></li>
+                    <li><a href="about.html">Our Story</a></li>
+                    <li><a href="contact.html">Support</a></li>
+                </ul>
+
+                <div class="cart-icon-container" id="cart-icon">
+                    <svg class="cart-icon" viewBox="0 0 24 24">
+                        <path d="M6 6h15l-1.68 7.57a2.5 2.5 0 0 1-2.44 1.93H9.17a2.5 2.5 0 0 1-2.43-1.92L4.5 2H2"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="18" cy="20" r="1"></circle>
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </div>
+
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <div class="order-container">
-            <div class="order-details">
-                <img id="product-image" src="" alt="Product Image">
-                <h2 id="product-name">Loading...</h2>
-                <p id="product-desc">Loading product details...</p>
-                <div class="price-box">
-                    <h3>Total: <span id="price-display">GHC 0.00</span></h3>
-                </div>
+    <main class="container">
+        <div class="checkout-layout">
+            <div class="checkout-left">
+                <h1 class="checkout-title">CHECKOUT</h1>
+                
+                <form id="checkout-form" class="order-form">
+                    <div class="checkout-section">
+                        <h2 class="checkout-subtitle">1. YOUR DETAILS</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" class="form-control" required placeholder="Jona Nii">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required placeholder="055 123 4567">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-control" required placeholder="student@university.edu.gh">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hostel">Hostel / Location</label>
+                                <input type="text" id="hostel" name="hostel" class="form-control" required placeholder="Evandy Hostel, Room 12">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="checkout-section">
+                        <h2 class="checkout-subtitle">2. PAYMENT METHOD</h2>
+                        <div class="payment-options">
+                            <label class="payment-card">
+                                <input type="radio" name="payment_method" value="MOMO" checked>
+                                <div class="payment-card-content">
+                                    <span class="payment-title">Mobile Money</span>
+                                    <span class="payment-desc">Pay instantly via MTN/Telecel</span>
+                                </div>
+                            </label>
+                            <label class="payment-card">
+                                <input type="radio" name="payment_method" value="COD">
+                                <div class="payment-card-content">
+                                    <span class="payment-title">Cash on Delivery</span>
+                                    <span class="payment-desc">Pay when you receive your order</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">COMPLETE ORDER</button>
+                    <p class="secure-text">🔒 Secure Checkout via WhatsApp</p>
+                </form>
             </div>
 
-            <div class="order-form-section">
-                <form id="order-form">
-                    <h2 style="margin-bottom: 1.5rem; font-family: var(--font-display);">Order Details</h2>
-                    
-                    <div class="form-group">
-                        <label for="size">Select Size</label>
-                        <select id="size" name="size" class="form-control" required>
-                            <!-- Options populated by JS -->
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" class="form-control" value="1" min="1" max="10" required>
-                    </div>
-
-                    <h3 style="margin: 2rem 0 1rem; font-family: var(--font-display);">Payment Method</h3>
-                    <div class="payment-options">
-                        <label>
-                            <input type="radio" name="payment" value="cod" checked required>
-                            <div>
-                                <strong>Cash on Delivery (COD)</strong>
-                                <br><small style="color: var(--secondary-text);">Pay securely when you receive your order.</small>
-                            </div>
-                        </label>
-                        <label>
-                            <input type="radio" name="payment" value="momo" required>
-                            <div>
-                                <strong>Mobile Money</strong>
-                                <br><small style="color: var(--secondary-text);">Pay now for a seamless experience.</small>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div id="momo-instructions" style="display:none;">
-                        <h3>📱 Complete Mobile Money Payment</h3>
-                        
-                        <div class="payment-info-card">
-                            <div class="info-row">
-                                <span class="label">Send payment to:</span>
-                                <span class="value highlight">0123 456 789</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Amount:</span>
-                                <span class="value" id="momo-amount-display">GHC 0.00</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="label">Reference:</span>
-                                <span class="value">Your Order ID (auto-filled below)</span>
-                            </div>
-                        </div>
-
-                        <div class="momo-guide-accordion">
-                            <details>
-                                <summary>Where do I find the Transaction ID?</summary>
-                                <div class="guide-content">
-                                    <div class="provider-guide">
-                                        <h4>MTN Mobile Money</h4>
-                                        <p>Check the SMS confirmation:</p>
-                                        <blockquote>"Transaction ID: <strong>1234567890</strong>"</blockquote>
-                                    </div>
-                                    <div class="provider-guide">
-                                        <h4>Vodafone Cash</h4>
-                                        <p>Look for the Reference in the SMS:</p>
-                                        <blockquote>"Ref: <strong>1234567890</strong>"</blockquote>
-                                    </div>
-                                    <div class="provider-guide">
-                                        <h4>AirtelTigo Money</h4>
-                                        <p>Find the Transaction ID in the SMS:</p>
-                                        <blockquote>"Transaction ID: <strong>1234567890</strong>"</blockquote>
-                                    </div>
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="ref-container" style="display:none;">
-                        <label for="payment-ref">
-                            Transaction ID <span style="color: red;">*</span>
-                            <span class="tooltip-icon" title="The unique ID from your payment confirmation SMS">ⓘ</span>
-                        </label>
-                        <input type="text" id="payment-ref" name="payment-ref" class="form-control" placeholder="e.g., 1234567890">
-                        <small class="form-text text-muted">Enter the ID received in your payment SMS confirmation.</small>
-                    </div>
-
-                    <h3 style="margin: 2rem 0 1rem; font-family: var(--font-display);">Shipping Details</h3>
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="024 123 4567" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="john@example.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Delivery Address</label>
-                        <textarea id="address" name="address" class="form-control" rows="3" placeholder="Enter your full delivery address..." required></textarea>
-                    </div>
-
-                    <input type="hidden" id="total-amount" name="total-amount">
-                    
-                    <button type="submit" class="btn" style="width: 100%;">Confirm Order</button>
-                </form>
+            <div class="checkout-right">
+                <div id="order-summary" class="order-summary-box sticky-summary">
+                    <!-- Order items will be injected here -->
+                </div>
             </div>
         </div>
     </main>
@@ -146,6 +103,27 @@
     <footer>
         <p>&copy; 2026 PayNDeliver. Designed for Excellence.</p>
     </footer>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h2>Your Cart</h2>
+                <button class="close-cart" id="close-cart">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be injected here -->
+                <p style="text-align: center; margin-top: 2rem; color: #888;">Your cart is empty.</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total</span>
+                    <span id="cart-total-price">GHC 0.00</span>
+                </div>
+                <button id="checkout-btn" class="btn btn-primary" style="width: 100%;">Checkout</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
