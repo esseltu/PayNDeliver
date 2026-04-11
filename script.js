@@ -453,42 +453,68 @@ function setupOrderPage() {
             const hostel = document.getElementById('hostel').value;
             const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
-            // Construct WhatsApp Message
-            let message = `*NEW ORDER FROM PAYNDELIVER* 📦\n\n`;
-            message += `*Customer Details:*\n`;
-            message += `👤 Name: ${name}\n`;
-            message += `📞 Phone: ${phone}\n`;
-            message += `📧 Email: ${email}\n`;
-            message += `📍 Location: ${hostel}\n`;
-            message += `💳 Payment: ${paymentMethod === 'MOMO' ? 'Mobile Money' : 'Cash on Delivery'}\n\n`;
+            const now = new Date();
+            const y = String(now.getFullYear());
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            const rand = Math.random().toString(36).slice(2, 8).toUpperCase();
+            const orderReference = `PND-${y}${m}${d}-${rand}`;
+            try {
+                localStorage.setItem('payndeliver_last_order_id', orderReference);
+            } catch (e) {}
+
+            const formData = new FormData();
+            formData.append("order_reference", orderReference);
+            formData.append("name", name);
+            formData.append("phone", phone);
+            formData.append("email", email);
+            formData.append("hostel", hostel);
+            formData.append("payment_method", paymentMethod === 'MOMO' ? 'Mobile Money' : 'Cash on Delivery');
             
-            message += `*Order Summary:*\n`;
+            // Format Order Details
+            let orderDetails = "";
             cart.forEach(item => {
-                message += `▫️ ${item.name} (Size: ${item.size}) x${item.quantity} - ${formatPrice(item.price * item.quantity)}\n`;
+                orderDetails += `${item.name} (Size: ${item.size}) x${item.quantity} - ${formatPrice(item.price * item.quantity)}\n`;
             });
+            orderDetails += `\nTOTAL: ${formatPrice(total)}`;
             
-            message += `\n*TOTAL: ${formatPrice(total)}*`;
+            formData.append("order_summary", orderDetails);
+            formData.append("_subject", `New Order from ${name}`);
+            formData.append("_template", "table");
+            formData.append("_captcha", "false");
 
-            // Encode and Open WhatsApp
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappNumber = "233544130026"; // 0544130026 -> 233544130026
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            // UI Feedback
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing Order...";
 
-            // Clear Cart and Redirect
-            localStorage.setItem('payndeliver_cart_pending_clear', 'true');
-            
-            // We open WhatsApp in a new tab usually, but for "Submit" it's better to just go there.
-            // However, we also want to show the Thank You page.
-            // Flow: Open WhatsApp -> Redirect current page to Thank You?
-            // Browsers might block popups.
-            // Safer: Redirect current tab to WhatsApp.
-            
-            window.location.href = whatsappUrl;
-            
-            // Note: Since we are redirecting away, we can't easily "clear cart" after they come back unless we assume they sent it.
-            // Let's clear it now.
-            cart = [];
-            saveCart();
+            // Submit via AJAX
+            fetch(FORMSUBMIT_ENDPOINT, {
+                method: "POST",
+                body: formData
+            })
+            .then(async (response) => {
+                if (!response.ok) {
+                    throw new Error(`Order submission failed: ${response.status}`);
+                }
+                try {
+                    await response.json();
+                } catch (e) {}
+            })
+            .then(() => {
+                // Clear Cart and Redirect
+                localStorage.setItem('payndeliver_cart_pending_clear', 'true');
+                cart = [];
+                saveCart();
+                window.location.href = 'thankyou.html';
+            })
+            .catch(error => {
+                console.error("Error submitting order:", error);
+                alert("There was an error placing your order. Please try again.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            });
         });
     }
 }
@@ -496,6 +522,23 @@ function setupOrderPage() {
 // --- Thank You Page Functions ---
 function setupThankYouPage() {
     try {
+        const orderIdEl = document.getElementById('order-id-display');
+        if (orderIdEl) {
+            let orderId = localStorage.getItem('payndeliver_last_order_id');
+            if (!orderId) {
+                const now = new Date();
+                const y = String(now.getFullYear());
+                const m = String(now.getMonth() + 1).padStart(2, '0');
+                const d = String(now.getDate()).padStart(2, '0');
+                const rand = Math.random().toString(36).slice(2, 8).toUpperCase();
+                orderId = `PND-${y}${m}${d}-${rand}`;
+                try {
+                    localStorage.setItem('payndeliver_last_order_id', orderId);
+                } catch (e) {}
+            }
+            orderIdEl.textContent = orderId;
+        }
+
         if (localStorage.getItem('payndeliver_cart_pending_clear') === 'true') {
             localStorage.removeItem('payndeliver_cart');
             localStorage.removeItem('payndeliver_cart_pending_clear');
